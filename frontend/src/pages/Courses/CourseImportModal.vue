@@ -173,7 +173,7 @@ const uploadFile = (e: Event) => {
 
 const importZip = () => {
 	if (!zip.value) return
-	call('lms.lms.api.import_course_as_zip', {
+	call('lms.lms.api.import_course_from_zip', {
 		zip_file_path: zip.value.file_url,
 	})
 		.then((data: any) => {

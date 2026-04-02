@@ -184,11 +184,8 @@ const exportCourse = async () => {
 		}
 
 		const blob = await response.blob()
-
-		// Extract filename from header if present
 		const disposition = response.headers.get('Content-Disposition')
 		let filename = 'course.zip'
-
 		if (disposition && disposition.includes('filename=')) {
 			filename = disposition.split('filename=')[1].replace(/"/g, '')
 		}

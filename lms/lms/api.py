@@ -2375,6 +2375,6 @@ def export_course_as_zip(course_name: str):
 
 
 @frappe.whitelist()
-def import_course_as_zip(zip_file_path):
+def import_course_from_zip(zip_file_path: str):
 	frappe.only_for(["Moderator", "Course Creator"])
 	return import_course_zip(zip_file_path)
