@@ -6,7 +6,6 @@ import shutil
 import tempfile
 import zipfile
 from datetime import date, datetime, timedelta
-from urllib.parse import urlparse
 
 import frappe
 from frappe import _
@@ -559,7 +558,9 @@ def get_assessment_map():
 
 def get_assessment_title(zip_file, assessment_name, assessment_type):
 	assessment_map = get_assessment_map()
-	file_name = f"assessments/{assessment_map.get(assessment_type, '').lower()}_{assessment_name}.json"
+	doctype = "_".join(assessment_map.get(assessment_type).lower().split(" "))
+	assessment_name = "_".join(assessment_name.split(" "))
+	file_name = f"assessments/{doctype}_{assessment_name}.json"
 	try:
 		with zip_file.open(file_name) as f:
 			assessment_data = json.load(f)
