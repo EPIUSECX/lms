@@ -442,8 +442,6 @@ def create_user(user):
 		full_name=full_name,
 		user_image=user.get("user_image"),
 		roles=["Course Creator"],
-		check_existing=False,
-		validate_email=True,
 	)
 	return user_doc
 

@@ -99,31 +99,34 @@ def process_user_names(first_name, last_name, full_name):
 	return first_name, last_name or "", full_name
 
 
-def create_user_document(email, first_name, last_name, full_name, user_image=None):
+def create_user_document(email, first_name, last_name, full_name, user_image=None, roles=None):
 	user_doc = frappe.new_doc("User")
 	user_doc.email = email
 	user_doc.first_name = first_name
 	user_doc.last_name = last_name
 	user_doc.full_name = full_name
+	user_doc.user_image = user_image
 	user_doc.send_welcome_email = False
-	if user_image:
-		user_doc.user_image = user_image
+	if not roles:
+		roles = ["LMS Student"]
+	for role in roles:
+		user_doc.append("roles", {"role": role})
 	user_doc.insert()
 	return user_doc
 
 
 def create_user(email, first_name=None, last_name=None, full_name=None, user_image=None, roles=None):
 	validate_email_address(email, True)
+	print(email)
+	print(frappe.db.exists("User", email))
 	existing_user = frappe.db.exists("User", email)
+	print("existing_user", existing_user)
 	if existing_user:
+		print("User already exists")
 		return frappe.get_doc("User", email)
 
 	first_name, last_name, full_name = process_user_names(first_name, last_name, full_name)
-	user_doc = create_user_document(email, first_name, last_name, full_name, user_image)
-
-	if not roles:
-		roles = ["LMS Student"]
-	user_doc.add_roles(*roles)
+	user_doc = create_user_document(email, first_name, last_name, full_name, user_image, roles)
 	return user_doc
 
 
